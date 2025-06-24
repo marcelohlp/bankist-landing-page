@@ -29,3 +29,18 @@ document.addEventListener("keydown", function (e) {
         closeModal();
     }
 });
+
+const btnScrollTo = document.querySelector(".btn--scroll-to");
+const sectionOne = document.getElementById("section--1");
+
+btnScrollTo.addEventListener("click", (event) => {
+    // Old method
+    // const sectionOneCoords = sectionOne.getBoundingClientRect(); // => Gets the exact position and size of the element relative to the viewport.
+    // window.scrollTo({
+    //     left: sectionOneCoords.left + window.scrollx,
+    //     top: sectionOneCoords.top + window.scrollY,
+    //     behavior: "smooth",
+    // });
+
+    sectionOne.scrollIntoView({ behavior: "smooth" });
+});
