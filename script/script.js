@@ -1,5 +1,8 @@
 "use strict";
 
+const btnScrollTo = document.querySelector(".btn--scroll-to");
+const sectionOne = document.getElementById("section--1");
+
 ///////////////////////////////////////
 // Modal window
 
@@ -30,9 +33,6 @@ document.addEventListener("keydown", function (e) {
     }
 });
 
-const btnScrollTo = document.querySelector(".btn--scroll-to");
-const sectionOne = document.getElementById("section--1");
-
 btnScrollTo.addEventListener("click", (event) => {
     // Old method
     // const sectionOneCoords = sectionOne.getBoundingClientRect(); // => Gets the exact position and size of the element relative to the viewport.
@@ -43,4 +43,24 @@ btnScrollTo.addEventListener("click", (event) => {
     // });
 
     sectionOne.scrollIntoView({ behavior: "smooth" });
+});
+
+// document.querySelectorAll(".nav__link").forEach((link) => {
+//     link.addEventListener("click", (event) => {
+//         event.preventDefault();
+//         const id = link.getAttribute("href");
+//         document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+//     });
+// });
+
+// The previous methodology works well, although it creates many DOM elements using the "forEach" method. In this case, a better approach that
+// achieves the same result is to delegate this functionality using the parent element and selecting the element that is the target of the event.
+
+document.querySelector(".nav__links").addEventListener("click", (event) => {
+    event.preventDefault();
+    const target = event.target;
+    if (target.classList.contains("nav__link")) {
+        const sectionId = target.getAttribute("href");
+        document.querySelector(sectionId).scrollIntoView({ behavior: "smooth" });
+    }
 });
