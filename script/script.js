@@ -141,7 +141,6 @@ const observerOptions = {
 
 const observerCallback = function (entries, observer) {
     const [entry] = entries;
-    console.log(entry);
     if (!entry.isIntersecting) navigation.classList.add("sticky");
     else navigation.classList.remove("sticky");
 };
@@ -149,3 +148,30 @@ const observerCallback = function (entries, observer) {
 const observer = new IntersectionObserver(observerCallback, observerOptions);
 
 observer.observe(header);
+
+// REVEALLING SECTIONS
+
+const allSections = document.querySelectorAll(".section");
+
+const revealSections = function (entries, observer) {
+    entries.forEach((entry) => {
+        const target = entry.target;
+        if (!entry.isIntersecting) return;
+        target.classList.remove("section--hidden");
+        observer.unobserve(target);
+    });
+};
+
+const revealSectionsObject = {
+    root: null,
+    threshold: 0.15,
+};
+
+//section--hidden
+
+const sectionObserver = new IntersectionObserver(revealSections, revealSectionsObject);
+
+allSections.forEach((section) => {
+    sectionObserver.observe(section);
+    section.classList.add("section--hidden");
+});
