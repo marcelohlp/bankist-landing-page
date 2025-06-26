@@ -86,3 +86,28 @@ tabsContainer.addEventListener("click", (event) => {
     tabsContent.forEach((content) => content.classList.remove("operations__content--active"));
     document.querySelector(`.operations__content--${tabNumber}`).classList.add("operations__content--active");
 });
+
+// MENU FADE ANIMATION
+
+const navigation = document.querySelector(".nav");
+
+// Handler function only accepts one argument: the "event" argument.
+function handlerNavigationMouseHover(event) {
+    const hoveredElement = event.target;
+
+    if (!hoveredElement.classList.contains("nav__link")) return;
+
+    const siblings = hoveredElement.closest(".nav").querySelectorAll(".nav__link");
+    const logo = hoveredElement.closest(".nav").querySelector("img");
+
+    siblings.forEach((element) => {
+        if (element !== hoveredElement) element.style.opacity = this.opacity;
+    });
+    logo.style.opacity = this.opacity;
+}
+
+// Using the bind method to pass arguments or an object to a handler function.
+// The bind method creates a new function that, when called, has its "this" keyword set to the provided value.
+navigation.addEventListener("mouseover", handlerNavigationMouseHover.bind({ opacity: 0.5 }));
+
+navigation.addEventListener("mouseout", handlerNavigationMouseHover.bind({ opacity: 1.0 }));
