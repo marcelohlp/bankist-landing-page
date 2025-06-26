@@ -167,11 +167,37 @@ const revealSectionsObject = {
     threshold: 0.15,
 };
 
-//section--hidden
-
 const sectionObserver = new IntersectionObserver(revealSections, revealSectionsObject);
 
 allSections.forEach((section) => {
     sectionObserver.observe(section);
     section.classList.add("section--hidden");
 });
+
+// LAZY LOADING IMAGES
+
+const lazyImages = document.querySelectorAll("img[data-src]");
+
+const loadImage = function (entries, observer) {
+    entries.forEach((entry) => {
+        const target = entry.target;
+
+        if (!entry.isIntersecting) return;
+
+        target.src = target.dataset.src;
+
+        target.addEventListener("load", () => target.classList.remove("lazy-img"));
+
+        observer.unobserve(target);
+    });
+};
+
+const loadImageObject = {
+    root: null,
+    threshold: 0.0,
+    rootMargin: "200px",
+};
+
+const imageObserver = new IntersectionObserver(loadImage, revealSectionsObject);
+
+lazyImages.forEach((image) => imageObserver.observe(image));
