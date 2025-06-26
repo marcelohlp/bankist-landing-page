@@ -64,3 +64,25 @@ document.querySelector(".nav__links").addEventListener("click", (event) => {
         document.querySelector(sectionId).scrollIntoView({ behavior: "smooth" });
     }
 });
+
+// TABBED COMPONENT
+
+const tabsButton = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabsContent = document.querySelectorAll(".operations__content");
+
+tabsContainer.addEventListener("click", (event) => {
+    const clickedButton = event.target.closest(".operations__tab");
+    // The closest method is used to get the nearest button that contains the class ".operations__tab", because the user might click an element
+    // inside the button rather than the button itself.
+
+    if (!clickedButton) return; // Nothing happens if no button is selected.
+
+    tabsButton.forEach((button) => button.classList.remove("operations__tab--active"));
+    clickedButton.classList.add("operations__tab--active");
+
+    const tabNumber = clickedButton.dataset.tab;
+
+    tabsContent.forEach((content) => content.classList.remove("operations__content--active"));
+    document.querySelector(`.operations__content--${tabNumber}`).classList.add("operations__content--active");
+});
