@@ -111,3 +111,41 @@ function handlerNavigationMouseHover(event) {
 navigation.addEventListener("mouseover", handlerNavigationMouseHover.bind({ opacity: 0.5 }));
 
 navigation.addEventListener("mouseout", handlerNavigationMouseHover.bind({ opacity: 1.0 }));
+
+// STICKY NAVIGATION
+
+// Old method
+// const intialCoords = sectionOne.getBoundingClientRect();
+
+// window.addEventListener("scroll", () => {
+//     if (window.scrollY > intialCoords.top) navigation.classList.add("sticky");
+//     else navigation.classList.remove("sticky");
+// });
+
+// Intersection Observer API => Allows you to detect when a target element enters or exits the visible area of the viewport, enabling efficient
+// handling of events like lazy loading, animations, or infinite scrolling—without relying on scroll events.
+
+const header = document.querySelector(".header");
+const navigationHeight = navigation.getBoundingClientRect().height;
+
+const observerOptions = {
+    root: null,
+    // => Sets the element used as the viewport for checking visibility of the target. When set to null, the browser viewport is used as the root.
+    threshold: 0,
+    // => Defines how much of the target element must be visible before the callback is triggered. A value of 0 means any part of the element
+    // entering the viewport triggers the observer.
+    rootMargin: `-${navigationHeight}px`,
+    // => Expands or shrinks the root’s bounding box before checking for intersection. A value like -80px at the top means the target must pass 80px
+    // into the viewport before being considered visible. Useful for accounting for fixed headers or early/late triggers.
+};
+
+const observerCallback = function (entries, observer) {
+    const [entry] = entries;
+    console.log(entry);
+    if (!entry.isIntersecting) navigation.classList.add("sticky");
+    else navigation.classList.remove("sticky");
+};
+
+const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+observer.observe(header);
