@@ -201,3 +201,70 @@ const loadImageObject = {
 const imageObserver = new IntersectionObserver(loadImage, revealSectionsObject);
 
 lazyImages.forEach((image) => imageObserver.observe(image));
+
+// SLIDER COMPONENT
+
+const slider = function () {
+    const slides = document.querySelectorAll(".slide");
+    const buttonLeft = document.querySelector(".slider__btn--left");
+    const buttonRight = document.querySelector(".slider__btn--right");
+    const dotContainer = document.querySelector(".dots");
+
+    let currentSlide = 0;
+    const maxSlide = slides.length;
+
+    (() => {
+        goToSlide(currentSlide);
+        createDots();
+        activateDot(currentSlide);
+    })();
+
+    buttonRight.addEventListener("click", nextSlide);
+    buttonLeft.addEventListener("click", previousSlide);
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") previousSlide();
+        if (event.key === "ArrowRight") nextSlide();
+    });
+
+    dotContainer.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!target.classList.contains("dots__dot")) return;
+        currentSlide = Number(target.dataset.slide);
+        goToSlide(currentSlide);
+        activateDot(currentSlide);
+    });
+
+    function nextSlide() {
+        if (currentSlide === maxSlide - 1) currentSlide = 0;
+        else currentSlide++;
+        goToSlide(currentSlide);
+        activateDot(currentSlide);
+    }
+
+    function previousSlide() {
+        if (currentSlide === 0) currentSlide = maxSlide - 1;
+        else currentSlide--;
+        goToSlide(currentSlide);
+        activateDot(currentSlide);
+    }
+
+    function goToSlide(slideNumber) {
+        slides.forEach((slide, index) => {
+            slide.style.transform = `translateX(${100 * (index - slideNumber)}%)`;
+        });
+    }
+
+    function createDots() {
+        slides.forEach((_, index) => {
+            dotContainer.insertAdjacentHTML("beforeend", `<button class="dots__dot" data-slide="${index}"></button>`);
+        });
+    }
+
+    function activateDot(slide) {
+        document.querySelectorAll(".dots__dot").forEach((dot) => dot.classList.remove("dots__dot--active"));
+        document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add("dots__dot--active");
+    }
+};
+
+slider();
